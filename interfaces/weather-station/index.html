@@ -11,7 +11,7 @@
 </head>
 <body>
 	<p align=left style="font-size:150%;">Weather station<br><br>
-	Cell: <select style="color:black;" id="row" onchange="update();">
+	Cell: <select style="color:black;" id="row" onchange="newCell();">
 		<option>A</option>
 		<option>B</option>
 		<option>C</option>
@@ -23,7 +23,7 @@
 		<option>I</option>
 	</select>
 
-	<select style="color:black;" id="column" onchange="update();">
+	<select style="color:black;" id="column" onchange="newCell();">
 		<option>1</option>
 		<option>2</option>
 		<option>3</option>
@@ -59,17 +59,12 @@
 	var map;
 	var row = 0;
 	var column = 0;
-	nutella.net.request('current_temp',{},function(msg,from){
+	nutella.net.subscribe('temp_update',function(msg,from){
 		map=msg;
-		document.getElementById('temp').innerHTML = map[row][column]  + ' ºC';;
-		nutella.net.subscribe('temp_update',function(msg,from){
-			map=msg;
-			document.getElementById('temp').innerHTML = map[row][column] + ' ºC';
-		});
+		document.getElementById('temp').innerHTML = map[row][column] + ' ºC';
 	});
 
-
-	function update() {
+	function newCell() {
 		row = document.getElementById('row').selectedIndex;
 		column = document.getElementById('column').selectedIndex;
 		document.getElementById('temp').innerHTML = map[row][column] + ' ºC';

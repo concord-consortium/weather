@@ -67,6 +67,20 @@
 	// 	document.getElementById('channels').value = JSON.stringify(message,null,3);
 	// })
 	
+	var map =  [[20,20,20,20,20,20,20,20,20,20,20,20],
+				[20,20,20,20,20,20,20,20,20,20,20,20],
+				[20,20,20,20,20,20,20,20,20,20,20,20],
+				[20,20,20,20,20,20,20,20,20,20,20,20],
+				[20,20,20,20,20,20,20,20,20,20,20,20],
+				[20,20,20,20,20,20,20,20,20,20,20,20],
+				[20,20,20,20,20,20,20,20,20,20,20,20],
+				[20,20,20,20,20,20,20,20,20,20,20,20],
+				[20,20,20,20,20,20,20,20,20,20,20,20]
+			   ];
+	var step;
+
+	// nutella.net.handle_requests('current_temp',function(msg,from){return(map);});
+
 	function setSourceMode(){
 		if (document.getElementById('sources').selectedIndex == 0) {
 			document.getElementById('map').src = "boston.jpg";
@@ -85,20 +99,6 @@
 		};
 	}
 
-	var map =  [[20,20,20,20,20,20,20,20,20,20,20,20],
-				[20,20,20,20,20,20,20,20,20,20,20,20],
-				[20,20,20,20,20,20,20,20,20,20,20,20],
-				[20,20,20,20,20,20,20,20,20,20,20,20],
-				[20,20,20,20,20,20,20,20,20,20,20,20],
-				[20,20,20,20,20,20,20,20,20,20,20,20],
-				[20,20,20,20,20,20,20,20,20,20,20,20],
-				[20,20,20,20,20,20,20,20,20,20,20,20],
-				[20,20,20,20,20,20,20,20,20,20,20,20]
-			   ];
-	var step;
-
-	nutella.net.handle_requests('current_temp',function(msg,from){return(map);});
-
 	function stopSimulation () { 
 		step = 12; 
 		document.getElementById('run').disabled = false; 
@@ -108,25 +108,23 @@
 	function runSimulation(){
 		document.getElementById('run').disabled = true; 
 		document.getElementById('stop').disabled = false;
-		for (var i=0; i<9; i++) {
-			map[i] = [];
-			for (var j=0; j<12; j++) map[i][j]=20;
-		}
+		for (var i=0; i<9; i++) for (var j=0; j<12; j++) map[i][j]=20;
 		step = 0;
 		nutella.net.publish('temp_update',map);
 		setTimeout(crank,document.getElementById('period').value * 60 *1000/12);
 	}
 
 	function crank () {
-		for (var i=0; i<9; i++)
-			for (var j=0; j<12; j++) {
-				if (i == 1 || i == 2) map[i][j] = j <= ((2*step)-1) ? 30 : 20;
-				if (i == 7) map [i][j] = j < (step-1) ? 10 : 20
-		}
 		step++;
-		nutella.net.publish('temp_update',map);
-		if (step <12) setTimeout(crank,document.getElementById('period').value * 60 *1000/12);
-
+		if (step <= 12) {
+			for (var i=0; i<9; i++)
+				for (var j=0; j<12; j++) {
+					if (i == 1 || i == 2) map[i][j] = j <= ((2*step)-1) ? 30 : 20;
+					if (i == 7) map [i][j] = j <= (step-1) ? 10 : 20;
+				}
+			nutella.net.publish('temp_update',map);
+			setTimeout(crank,document.getElementById('period').value * 60 *1000/12);
+		}	else { stopSimulation(); alert ("simulation completed");}
 
 	}
 
