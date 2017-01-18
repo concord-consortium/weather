@@ -16,10 +16,11 @@
 			<td align=right>Source:</td>
 			<td align=left>
 				<select style="color:black;" id="sources" onchange="setSourceMode();">
-					<option>Chicagoland yesterday</option>
-					<option>Alaska May 14, 2014</option>
 					<option>Boston area, July 5, 2016</option>
+					<option>Alaska May 14, 2014</option>
+					<option>Chicagoland yesterday</option>
 					<option>Tom's 1-D simulation</option>
+					<option>Tom's 2-D simulation</option>
 				</select>
 			</td>
 			<td align=left style="color:yellow;font-size:100%;">
@@ -29,7 +30,7 @@
 		<tr>
 			<td valign=top align=right>Window:</td>
 			<td align=left>
-				<img id="map" src="chicagoland.jpg" width=400 height=250><br><img width=400 src="controls.jpg">
+				<img id="map" src="boston.jpg" width=400 height=250><br><img width=400 src="controls.jpg">
 			</td>
 			<td align=left style="color:yellow;font-size:100%;">
 				Pan/zoom to select geographic area for mapping to the classroom. Add Quicktime-like controls to animate weather (selecting represented variables) and selecting time interval to be enacted. This defines the space and time of the enactment from the frame of the weather history. Include ability to overlay classroom map (variable opacity). This is really the full-blown imaging tool we want kids to have access to as well (at least eventually).
@@ -68,16 +69,19 @@
 	
 	function setSourceMode(){
 		if (document.getElementById('sources').selectedIndex == 0) {
-			document.getElementById('map').src = "chicagoland.jpg";
+			document.getElementById('map').src = "boston.jpg";
 		};
 		if (document.getElementById('sources').selectedIndex == 1) {
 			document.getElementById('map').src = "alaska.jpg";
 		};
 		if (document.getElementById('sources').selectedIndex == 2) {
-			document.getElementById('map').src = "boston.jpg";
+			document.getElementById('map').src = "overlay.jpg";
 		};
 		if (document.getElementById('sources').selectedIndex == 3) {
 			document.getElementById('map').src = "1d-land.jpg";
+		};
+		if (document.getElementById('sources').selectedIndex == 4) {
+			document.getElementById('map').src = "2d-land.jpg";
 		};
 	}
 
