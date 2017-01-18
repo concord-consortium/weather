@@ -3,86 +3,130 @@
 <head>
 	<meta charset="utf-8">
 	<!-- Your interface name here-->
-	<title></title>
+	<title>Enactment Control</title>
 	<!-- The description of this interfaces here -->
 	<meta name="description" content="">
+	<link rel="stylesheet" type="text/css" href="mystyle.css">
 	<!-- Your CSS here -->
 </head>
 <body>
-	<!-- Your markup here -->
-	<p>Hello world! This is a nutella basic web interface</p>
+	<p align=left style="font-size:150%;">Enactment Control interface</p>
+	<table cellpadding=5>
+		<tr>
+			<td align=right>Source:</td>
+			<td align=left>
+				<select style="color:black;" id="sources" onchange="setSourceMode();">
+					<option>Chicagoland yesterday</option>
+					<option>Alaska May 14, 2014</option>
+					<option>Boston area, July 5, 2016</option>
+					<option>Tom's 1-D simulation</option>
+				</select>
+			</td>
+			<td align=left style="color:yellow;font-size:100%;">
+				Sources are of two types: records of prior weather events and simulations of weather events. We will need an interface for curation of sources. 
+			</td>
+		</tr>
+		<tr>
+			<td valign=top align=right>Window:</td>
+			<td align=left>
+				<img id="map" src="chicagoland.jpg" width=400 height=250><br><img width=400 src="controls.jpg">
+			</td>
+			<td align=left style="color:yellow;font-size:100%;">
+				Pan/zoom to select geographic area for mapping to the classroom. Add Quicktime-like controls to animate weather (selecting represented variables) and selecting time interval to be enacted. This defines the space and time of the enactment from the frame of the weather history. Include ability to overlay classroom map (variable opacity). This is really the full-blown imaging tool we want kids to have access to as well (at least eventually).
+			</td>
+		</tr>
+		<tr>
+			<td align=right>Enactment:</td>
+			<td align=left >
+				<input size=6 type=text id="period" value=1> minutes
+			</td>
+			<td align=left style="color:yellow;font-size:100%;">
+				How much time the enactment described above will take in the classroom. 
+			</td>
+		</tr>
+		<tr>
+			<td align=right></td>
+			<td align=left >
+				<button id="run" onClick="runSimulation();">Start</button> <button id="stop" onCLick="stopSimulation();">Stop</button>
+			</td>
+			<td align=left style="color:yellow;font-size:100%;">
+				Start and stop the enactment. 
+			</td>
+		</tr>
+	</table>
+
+
 				
 	<!-- Scripts -->
 	<script src="nutella_lib.js" type="text/javascript"></script>
-	<!-- Your scripts here -->
-				
 	<script type="text/javascript">
-	
-	// Parse the query parameters
 	var query_parameters = NUTELLA.parseURLParameters();
-
-	// Get an instance of nutella. 
 	var nutella = NUTELLA.init(query_parameters.broker, query_parameters.app_id, query_parameters.run_id, NUTELLA.parseComponentId());
+	// nutella.net.request('channel_names',{},function(message, from){
+	// 	document.getElementById('channels').value = JSON.stringify(message,null,3);
+	// })
 	
-	// (Optional) Set the resourceId
-	// nutella.setResourceId('my_resource_id');
-	
-	
-	// Your code that uses the nutella instance here
-	
-	
-	// EXAMPLES
-	// You can do stuff like:
-	
-	// 1. Subscribing to a channel
-	nutella.net.subscribe('demo_channel', function(message, from_component_id, from_resource_id) {
-		// Your code to handle messages received on this here
-	});
-	
-	// 2. Subscribe to a wildcard channel (a.k.a. more than one channel at the same time,
-	// in the example below we'll receive messages on demo_channel/a, demo_channel/a/b, demo_channel/c, etc.)
-	nutella.net.subscribe('demo_channel/#', function(message, channel, from_component_id, from_resource_id) {
-		// Your code to handle messages received by this channel here
-	});
-	
-	// 3. Publish a message to a channel
-	nutella.net.publish('demo_channel', 'demo_message');
-	
-	// 3a The cool thing is that the message can be any Javascript variable or object
-	nutella.net.publish('demo_channel', {a: 'proper', key: 'value'});
-	
-	// 4. Make requests on a certain channel...
-	nutella.net.request('demo_channel', 'my_request', function(response) {
-		// Your code to handle the response here
-	});
-	
-	// 4a ... and, guess what, we can send anything in a request, like in publish!
-	// Requests can even be empty, kind of like a GET
-	nutella.net.request('demo_channel', function(response) {
-		// Your code to handle the response here
-	});
-	
-	// 5. Handle requests from other components
-	nutella.net.handle_requests('my_channel', function(request, component_id, resource_id) {
-		/// Your code to handle each request here
-		// Anything this function returns (string, integer, object,...) is going to be sent as the response
-		var response = 'this is my response';
-		// Or...
-		// var response = {};
-		// var response = 12345;
-		// var response = {a: 'proper', key: 'value'};
-		return response;
-	});
-	
-	// 6. Access the variables that uniquely identify this instance of this component
-	nutella.runId;
-	nutella.componentId;
-	nutella.resourceId;
-	
-	// 7. Do you need an extra instance of nutella (to work with React components for instance)? Not a problem...
-	// var nutella2 = NUTELLA.init(query_parameters.run_id, query_parameters.broker, 'your_interface_name');
-	
-	// HAVE FUN WITH nutella!
+	function setSourceMode(){
+		if (document.getElementById('sources').selectedIndex == 0) {
+			document.getElementById('map').src = "chicagoland.jpg";
+		};
+		if (document.getElementById('sources').selectedIndex == 1) {
+			document.getElementById('map').src = "alaska.jpg";
+		};
+		if (document.getElementById('sources').selectedIndex == 2) {
+			document.getElementById('map').src = "boston.jpg";
+		};
+		if (document.getElementById('sources').selectedIndex == 3) {
+			document.getElementById('map').src = "1d-land.jpg";
+		};
+	}
+
+	var map =  [[20,20,20,20,20,20,20,20,20,20,20,20],
+				[20,20,20,20,20,20,20,20,20,20,20,20],
+				[20,20,20,20,20,20,20,20,20,20,20,20],
+				[20,20,20,20,20,20,20,20,20,20,20,20],
+				[20,20,20,20,20,20,20,20,20,20,20,20],
+				[20,20,20,20,20,20,20,20,20,20,20,20],
+				[20,20,20,20,20,20,20,20,20,20,20,20],
+				[20,20,20,20,20,20,20,20,20,20,20,20],
+				[20,20,20,20,20,20,20,20,20,20,20,20]
+			   ];
+	var step;
+
+	nutella.net.handle_requests('current_temp',function(msg,from){return(map);});
+
+	function stopSimulation () { 
+		step = 12; 
+		document.getElementById('run').disabled = false; 
+		document.getElementById('stop').disabled = true;
+	};
+
+	function runSimulation(){
+		document.getElementById('run').disabled = true; 
+		document.getElementById('stop').disabled = false;
+		for (var i=0; i<9; i++) {
+			map[i] = [];
+			for (var j=0; j<12; j++) map[i][j]=20;
+		}
+		step = 0;
+		nutella.net.publish('temp_update',map);
+		setTimeout(crank,document.getElementById('period').value * 60 *1000/12);
+	}
+
+	function crank () {
+		for (var i=0; i<9; i++)
+			for (var j=0; j<12; j++) {
+				if (i == 1 || i == 2) map[i][j] = j <= ((2*step)-1) ? 30 : 20;
+				if (i == 7) map [i][j] = j < (step-1) ? 10 : 20
+		}
+		step++;
+		nutella.net.publish('temp_update',map);
+		if (step <12) setTimeout(crank,document.getElementById('period').value * 60 *1000/12);
+
+
+	}
+
+
 	
 	</script>
 				
