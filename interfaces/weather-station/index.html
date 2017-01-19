@@ -12,7 +12,7 @@
 <body>
 	<p align=left style="font-size:150%;">Weather station<br><br>
 	Cell: <select style="color:black;" id="row" onchange="newCell();">
-		<option>.A</option>
+		<option>A</option>
 		<option>B</option>
 		<option>C</option>
 		<option>D</option>
@@ -36,7 +36,7 @@
 		<option>10</option>
 		<option>11</option>
 		<option>12</option>
-	</select>
+	</select> <div style="color:yellow;font-size:120%;" id="timestamp"></div><br>
 	<div style="color:yellow;font-size:80%;"> Embedded or portable. Location might be automatic. Could show histories.</div>
 	<br><br>
 	<div id="temp" style="font-size:1000%;"></div>
@@ -56,7 +56,10 @@
 	
 	// (Optional) Set the resourceId
 	// nutella.setResourceId('my_resource_id');
-	
+	setInterval(function(){ nutella.net.publish('ping');}, 5 * 60 * 1000);
+	setInterval(function(){ var d = new Date(); document.getElementById('timestamp').innerHTML = d.toUTCString();}, 1000);
+
+
 	var map;
 	var row = 0;
 	var column = 0;

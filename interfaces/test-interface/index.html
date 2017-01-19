@@ -16,7 +16,7 @@
 			<td align=right>Source:</td>
 			<td align=left>
 				<select style="color:black;" id="sources" onchange="setSourceMode();">
-					<option>.Boston area, July 5, 2016</option>
+					<option>Boston area, July 5, 2016</option>
 					<option>Alaska May 14, 2014</option>
 					<option>Chicagoland yesterday</option>
 					<option>Tom's 1-D simulation</option>
@@ -79,6 +79,8 @@
 			   ];
 	var step;
 
+	setInterval(function(){ nutella.net.publish('ping');}, 5 * 60 * 1000);
+
 	// nutella.net.handle_requests('current_temp',function(msg,from){return(map);});
 
 	function setSourceMode(){
@@ -116,13 +118,13 @@
 
 	function crank () {
 		step++;
+		for (var i=0; i<9; i++)
+			for (var j=0; j<12; j++) {
+				if (i == 1 || i == 2) map[i][j] = j <= ((2*step)-1) ? 30 : 20;
+				if (i == 7) map [i][j] = j <= (step-1) ? 10 : 20;
+			}
+		nutella.net.publish('temp_update',map);
 		if (step <= 12) {
-			for (var i=0; i<9; i++)
-				for (var j=0; j<12; j++) {
-					if (i == 1 || i == 2) map[i][j] = j <= ((2*step)-1) ? 30 : 20;
-					if (i == 7) map [i][j] = j <= (step-1) ? 10 : 20;
-				}
-			nutella.net.publish('temp_update',map);
 			setTimeout(crank,document.getElementById('period').value * 60 *1000/12);
 		}	else { stopSimulation(); alert ("simulation completed");}
 
