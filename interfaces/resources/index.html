@@ -116,8 +116,7 @@
 
       var query_parameters = NUTELLA.parseURLParameters();
       var nutella = NUTELLA.init(query_parameters.broker, query_parameters.app_id, query_parameters.run_id, NUTELLA.parseComponentId());
-      console.log('got here');
-
+ 
           nutella.net.request('get_resources',{},function(parm_resources,from){ 
             var resources = parm_resources.resourceList;
             var topResourceID = parm_resources.topID;
@@ -152,16 +151,20 @@
                 resources.push({resourceID: ID, name: name, description:"",URL:"",query:""});
                 save();
                 current_resourceID = $( "#resources" ).children("li.ui-selected")[0].value; 
-                $('#unfold').hide();
                 document.getElementById('resourceName').value = name;
-                document.getElementById('recourceName').select();
-
+                document.getElementById('resourceName').select();
+                document.getElementById('URL').value = "";
+                document.getElementById('description').value = "";
+                document.getElementById('query').value = "";
+                document.getElementById('photo').src = '';
+                $('#unfold').show();
                 
               });
 
 
               $('#deleteResource').on("click",function(){
                 var ID = current_resourceID; //$('#resources li.ui-selected')[0].value;
+                if (ID <= 5) {alert ("Sorry. You can't delete that resource."); return;}
                 $('#resources li.ui-selected').remove();
                 document.getElementById('resourceName').value = '';
                 resources = resources.filter(function(arg){

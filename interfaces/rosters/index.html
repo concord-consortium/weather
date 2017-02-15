@@ -259,6 +259,8 @@
 
               $('#deleteInstance').on("click",function(){ if (current_instanceID < 0) return; // must be selected to delete
                 var ID = current_instanceID; //$('#portals li.ui-selected')[0].value;
+                if (ID == window.top.query_parameters.instanceID) return; //can't delete current portal
+                if (!confirm("Deleting a portal is permanent. OK to go ahead?")) return;
                 current_instanceID = -1;
                 $('#rosters li.ui-selected').remove();
                 document.getElementById('instanceName').value = '';

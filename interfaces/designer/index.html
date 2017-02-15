@@ -300,13 +300,21 @@
                 current_activityID = $( "#activities" ).children("li.ui-selected")[0].value; 
                 $('#resources li').removeClass('ui-selected');
                 $('#resources li a').removeClass('ui-selected');
-
+                distribution.push({portalID: window.top.query_parameters.portalID, activityID: current_activityID, resourceID: 1});
+                distribution.push({portalID: window.top.query_parameters.portalID, activityID: current_activityID, resourceID: 2});
+                distribution.push({portalID: window.top.query_parameters.portalID, activityID: current_activityID, resourceID: 3});
+                distribution.push({portalID: window.top.query_parameters.portalID, activityID: current_activityID, resourceID: 4});
+                distribution.push({portalID: window.top.query_parameters.portalID, activityID: current_activityID, resourceID: 5});
+                nutella.net.publish('set_distribution',{distribution:distribution,portalID:window.top.query_parameters.portalID,activityID:current_activityID});
+                loadResources();
               });
 
 
 
               $('#deletePortal').on("click",function(){
                 var ID = current_portalID; //$('#portals li.ui-selected')[0].value;
+                if (ID == 1 || ID == window.top.query_parameters.portalID) {alert("Sorry, you can't delete that portal."); return;};
+                if (!confirm("Deleting a portal is permanent. OK to go ahead?")) return;
                 $('#portals li.ui-selected').remove();
                 document.getElementById('portalName').value = '';
                 portals = portals.filter(function(arg){
@@ -328,6 +336,8 @@
               $('#deleteActivity').on("click",function(){
                 var ID = current_activityID; //$('#portals li.ui-selected')[0].value;
                 console.log(ID);
+                if (ID == 1 || ID == window.top.query_parameters.activityID) {alert("Sorry, you can't delete that activity."); return;};
+                if (!confirm("Deleting an activity is permanent. OK to go ahead?")) return;
                 $('#activities li.ui-selected').remove();
                 document.getElementById('activityName').value = '';
                 activities = activities.filter(function(arg){

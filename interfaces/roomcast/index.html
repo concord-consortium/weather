@@ -17,6 +17,13 @@ iframe {
 border: none; 
 }
 
+p {
+    display: block;
+    margin-top: 0;
+    margin-bottom: 3px;
+    margin-left: 0;
+    margin-right: 0;
+}
 
 #tabs .ui-tabs-active {
   background: orange;
@@ -48,6 +55,11 @@ background: lightyellow;       /* color of the little rim outide the iframe */
     }
   </style>
   <script type="text/javascript">
+
+
+      var bottomOfHeader = 135; //hard-wired hack
+      var bottomOfVisibleWindow = $(window).height(); console.log(bottomOfVisibleWindow);
+      var h = bottomOfVisibleWindow - bottomOfHeader;
 
 
       var query_parameters = NUTELLA.parseURLParameters();
@@ -83,10 +95,13 @@ background: lightyellow;       /* color of the little rim outide the iframe */
         if (portalID != -1) buildTabs(response);
         else buildTabs([{name:"portal",URL:"portal"}]);
             
-            $( window ).resize(function() {
-              $("iframe").attr("height",(window.innerHeight - $("#tabs-0").position().top - 25) * .87);
-            });
         });
+      });
+
+      $( window ).resize(function() {
+        bottomOfVisibleWindow = $(window).height(); console.log(bottomOfVisibleWindow);
+        h = bottomOfVisibleWindow - bottomOfHeader;
+        $("iframe").attr("height",h);
       });
 
      function buildTabs(resources){
@@ -112,30 +127,31 @@ background: lightyellow;       /* color of the little rim outide the iframe */
           $('#resources').append(
             $('<li><a href="#tabs-' + i + '">' + name + '</a></li>'));
           $('#tabs').append(
-            $('<div id="tabs-' + i + '"><iframe src="' + URL + '" width=100%></iframe></div>'));
+            $('<div id="tabs-' + i + '"><iframe src="' + URL + '" width=100% height=' + h + '></iframe></div>'));
         }
         $( "#tabs" ).tabs();
         $('.ui-tabs-nav').sortable();
         // this bit needs cleaning up. there are precise answers, i think.
 
-        $("iframe").attr("height", 650);//(window.innerHeight - $("#tabs-0").position().top - 25) * .87);
+        // $("iframe").attr("height", 650);//(window.innerHeight - $("#tabs-0").position().top - 25) * .87);
       }   
     });
 
+    // var topOfDiv = $('#tab').offset().top;
+
+    // $('#tabs').css('max-height', bottomOfVisibleWindow - topOfDiv - 100);
 
       
 
 
-
   </script>
 </head>
-<body bgcolor=black>
-  <div style="text-align: right;font-size: 150%;font-family: sans-serif;">
-    <span id="thisPortal"
-    <span style=" color:orange">nutella</span>
-  </div>
- 
-<div id="tabs">
+<body bgcolor=black >
+  <p id="titleSlot" style="color:white; text-align:left;font-size: 150%;font-family: sans-serif;">
+      precipitating change
+      <span style="color:orange; float:right;">nutella</span>
+  </p>
+<div id="tabs" >
   <ul id="resources">
   </ul>
 </div>
