@@ -8,13 +8,17 @@ var nutella = NUTELLA.init(cliArgs.broker, cliArgs.app_id, cliArgs.run_id, compo
 // Optionally you can set the resource Id
 nutella.setResourceId('my_resource_id');
 
-
+console.log ('a');
 var rosters = nutella.persist.getMongoObjectStore('rosters');
-
+console.log ('b');
 rosters.load(function(){ 
-    if (rosters.data == undefined){
+    console.log ('c');
+    // if (rosters.data == undefined){
+    if (!rosters.hasOwnProperty('data')) {
+        console.log ('d');
         rosters.data = [{portalID:1, topRosterID:1, rosterList:[{ID:1,name:"developer"}]}];
         rosters.save();
+        console.log ('e');
     }
     console.log ('rosters loaded');
     console.log (rosters.data);
