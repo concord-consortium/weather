@@ -1,57 +1,204 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<!-- Your interface name here-->
-	<title>Enactment Control</title>
-	<!-- The description of this interfaces here -->
-	<meta name="description" content="">
-	<link rel="stylesheet" type="text/css" href="mystyle.css">
-	<!-- Your CSS here -->
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
+  <script src="nutella_lib.js" type="text/javascript"></script>
+
+  <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.2/themes/cupertino/jquery-ui.css" />
+ 
+  <style type="text/css">
+
+    body {
+      font-size: 150%;
+      font-family: Helvetica;
+    }
+    input {
+      font-size: 66%;
+    }
+    .inactiveLink {
+       pointer-events: none;
+       cursor: default;
+    }
+
+    option {
+    	font-size: 30px;
+
+    }
+/*    td {
+      width:250px;
+    }
+*/
+
+    li {
+      font: 200 20px/1.5 Helvetica, Verdana, sans-serif;
+      border-bottom: 1px solid #ccc;
+      padding:5px 5px 5px 5px;
+      background-color:white;
+      list-style-type: none;
+    }
+    ul {
+       background-color:white;
+   }
+/*    li:last-child {
+      border: none;
+    }
+*/
+    li  a {
+      text-decoration: none;
+      color: white;
+
+      -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
+      -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
+      -o-transition: font-size 0.3s ease, background-color 0.3s ease;
+      -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
+      transition: font-size 0.3s ease, background-color 0.3s ease;
+      /*display: block;*/
+    }
+
+    #mydiv {
+      text-align: center;
+
+    }
+
+    button {
+      font-size: 20px;
+    }
+
+    li  a:hover {
+      font-size: 25px;
+      /*background: white;*/
+    }
+
+    .header:hover{
+      font-size: 30px;
+            -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
+      -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
+      -o-transition: font-size 0.3s ease, background-color 0.3s ease;
+      -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
+      transition: font-size 0.3s ease, background-color 0.3s ease;
+
+
+    }
+
+    #portals {
+      /*list-style: none;*/
+      padding-left: 0;
+    }
+ 
+    #portals .sort-handle {
+      display: none;
+    }
+ 
+    #portals .ui-selected .sort-handle
+     {
+      display: inline;
+      padding: 0 0.5em;
+      cursor: pointer;
+    }
+
+    #activities {
+      /*list-style: none;*/
+      padding-left: 0;
+    }
+ 
+    #activities .sort-handle {
+      display: none;
+    }
+ 
+    #activities .ui-selected .sort-handle
+     {
+      display: none;
+    }
+
+    #resources {
+      /*list-style: none;*/
+      padding-left: 0;
+    }
+
+    #resources li a
+    {
+      /*list-style: none;*/
+      padding-left: 0;
+    }
+
+    #resources li a.toggleList {
+      font-weight: bold;
+    }
+ 
+    #resources .sort-handle {
+      display: none;
+    }
+ 
+    #resources .ui-selected
+     {
+      font-weight: bold;
+/*      display: inline;
+      padding: 0 0.5em;
+      cursor: pointer;
+*/    }
+
+
+
+    .header {
+      font-size:25px; 
+      font-family:Helvetica;
+      cursor:pointer;
+    }
+
+    li a.ui-selected {
+      background-color: white;
+      color: black;
+      font-weight: bold;
+      background-image: none;
+    }
+
+
+
+    li.ui-selected {
+      background-color: white;
+      color: black;
+      font-weight: bold;
+      background-image: none;
+    }
+    li.ui-selecting {
+      background-color: white;
+      color: red;
+      background-image: none;
+    }
+ 
+  </style>
 </head>
-<body>
-	<p align=left style="font-size:150%;">Enactment Control interface</p>
-	<table cellpadding=5>
-		<tr>
-			<td align=right>Source:</td>
-			<td align=left>
+<body align=center valign=top>
+	<table cellpadding=5 align=center>
+		<tr valign=top>
+			<td align=center colspan=2>Source<br>
 				<select style="color:black;" id="sources" onchange="setSourceMode();">
 					<option>Boston area, July 5, 2016</option>
 					<option>Alaska May 14, 2014</option>
 					<option>Chicagoland yesterday</option>
 					<option>Tom's 1-D simulation</option>
 					<option>Tom's 2-D simulation</option>
-				</select>
+				</select><br>
+				<img id="map" src="boston.jpg" width=500 height=300><br>
+				<img width=500 src="controls.jpg">
+				<br>	
 			</td>
-			<td align=left style="color:yellow;font-size:100%;">
-				Sources are of two types: records of prior weather events and simulations of weather events. We will need an interface for curation of sources. 
-			</td>
-		</tr>
-		<tr>
-			<td valign=top align=right>Window:</td>
-			<td align=left>
-				<img id="map" src="boston.jpg" width=400 height=250><br><img width=400 src="controls.jpg">
-			</td>
-			<td align=left style="color:yellow;font-size:100%;">
-				Pan/zoom to select geographic area for mapping to the classroom. Add Quicktime-like controls to animate weather (selecting represented variables) and selecting time interval to be enacted. This defines the space and time of the enactment from the frame of the weather history. Include ability to overlay classroom map (variable opacity). This is really the full-blown imaging tool we want kids to have access to as well (at least eventually).
-			</td>
-		</tr>
-		<tr>
-			<td align=right>Enactment:</td>
-			<td align=left >
-				<input size=6 type=text id="period" value=1> minutes
-			</td>
-			<td align=left style="color:yellow;font-size:100%;">
-				How much time the enactment described above will take in the classroom. 
-			</td>
-		</tr>
-		<tr>
-			<td align=right></td>
-			<td align=left >
-				<button id="run" onClick="runSimulation();">Start</button> <button id="stop" onCLick="stopSimulation();">Stop</button>
-			</td>
-			<td align=left style="color:yellow;font-size:100%;">
-				Start and stop the enactment. 
+			<td colspan=2 >
+				Simulation controls<br><br>
+				Duration<br>
+			<span style="font-size:70%;">	
+				<input type=text size=3> Minutes <input type=text size=3> Seconds<br><br>
+			</span>
+				Observation<br>
+				<button id="run" onClick="runSimulation();">Start</button> 
+				<button id="stop" onCLick="stopSimulation();">Stop</button> 
+				<button id="reset" disabled onCLick="stopSimulation();">Reset</button>
+				<br><br>
+				Completion<br>
+				<button id="run2" onClick="runSimulation();">Start</button> 
+				<button id="stop2" onCLick="stopSimulation();">Stop</button> 
+				<button id="reset2" onCLick="stopSimulation();">Reset</button>
 			</td>
 		</tr>
 	</table>

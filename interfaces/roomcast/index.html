@@ -32,8 +32,8 @@ p {
 
     .ui-tabs .ui-tabs-tab
     {
-background: lightyellow;       /* color of the little rim outide the iframe */
-
+      background: lightyellow;       /* color of the little rim outide the tabs */
+      cursor: pointer;
 
     }
 
@@ -85,7 +85,7 @@ background: lightyellow;       /* color of the little rim outide the iframe */
         instanceID = query_parameters.instanceID;
       } 
 
-      nutella.net.request('get_activity', {}, function(activity){ 
+      nutella.net.request('get_activity', {}, function(activity){  
 
         activityID = activity;
         nutella.net.request('selected_resources',
@@ -149,7 +149,7 @@ background: lightyellow;       /* color of the little rim outide the iframe */
 <body bgcolor=black >
   <p id="titleSlot" style="color:white; text-align:left;font-size: 150%;font-family: sans-serif;">
       precipitating change
-      <span style="color:orange; float:right;">nutella</span>
+      <span style="color:orange; float:right;">roomCast</span>
   </p>
 <div id="tabs" >
   <ul id="resources">
