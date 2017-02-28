@@ -1,0 +1,10 @@
+version: '2'
+services:
+  nutella:
+    volumes:
+      - .:/app
+    # image: concordconsortium/nutella
+    build: .
+    ports:
+     - "57880:57880"
+     - "1884:1884"

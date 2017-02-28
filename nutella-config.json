@@ -1,0 +1,7 @@
+{
+  "config_dir": "/root/.nutella/",
+  "broker_dir": "/root/.nutella/broker/",
+  "main_interface_port": 57880,
+  "ready": true,
+  "broker": "127.0.0.1"
+}
