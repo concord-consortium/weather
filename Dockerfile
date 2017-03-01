@@ -106,6 +106,6 @@ ADD startup.sh /startup.sh
 RUN chmod u+x /startup.sh
 
 RUN cd / && nutella new app
-EXPOSE 57880 1884
+EXPOSE 57880 1884 27017
 
 CMD ["/usr/bin/nohup","/startup.sh"]
