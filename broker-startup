@@ -1,0 +1,5 @@
+#!/bin/sh
+
+BASEDIR=/usr/local
+$BASEDIR/bin/mosca --disable-stats --http-port 1884 > /dev/null 2>&1 &
+echo $! > $BASEDIR/bin/.pid

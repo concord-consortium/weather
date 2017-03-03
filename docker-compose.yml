@@ -1,0 +1,9 @@
+version: '2'
+services:
+  nutella:
+    image: knowuh/nutella
+    # build: .
+    ports:
+     - "80:57880"
+     - "1884:1884"
+     - "27017:27017"
